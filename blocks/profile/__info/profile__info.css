@@ -1,0 +1,13 @@
+.profile__info {
+  /*display: grid;*/
+  /*grid-template-columns: repeat(2, fit-content(100%));*/
+  /*grid-template-rows: repeat(2, 1fr);*/
+  /*grid-template-areas:*/
+  /*'user-name edit-button'*/
+  /*'user-occupation user-occupation';*/
+  /*column-gap: 18px;*/
+  /*row-gap: 16px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
