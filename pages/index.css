@@ -14,6 +14,7 @@
 @import url('../blocks/profile/__info/profile__info.css');
 @import url('../blocks/profile/__user-name/profile__user-name.css');
 @import url('../blocks/profile/__user-occupation/profile__user-occupation.css');
+@import url('../blocks/profile/__wrapper/profile__wrapper.css');
 
 @import url('../blocks/elements/elements.css');
 
@@ -38,8 +39,3 @@
 
 @import url('../blocks/footer/footer.css');
 @import url('../blocks/footer/__copyright/footer__copyright.css');
-
-/*div, a, h1, h2, h3, main, header, footer, img {*/
-/*  border: cornflowerblue 1px solid;*/
-/*  box-sizing: border-box;*/
-/*}*/

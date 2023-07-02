@@ -16,8 +16,8 @@
         <button class="popup__close-button" type="button"></button>
         <form class="form" name="profile" novalidate>
           <h2 class="form__title">Редактировать профиль</h2>
-          <input class="form__field form__field_type_name" name="name" type="text" placeholder="Ваше имя" minlength="2" maxlength="20" autocomplete="off" required>
-          <input class="form__field form__field_type_occupation" name="job" type="text" placeholder="Что вас определяет?" minlength="2" maxlength="40" autocomplete="off" required>
+          <input class="form__field form__field_type_name" name="name" type="text" placeholder="Ваше имя" minlength="2" maxlength="30" autocomplete="off" required>
+          <input class="form__field form__field_type_occupation" name="job" type="text" placeholder="Что вас определяет?" minlength="2" maxlength="100" autocomplete="off" required>
           <button class="form__save-button" type="submit">Сохранить</button>
         </form>
       </div>
@@ -25,8 +25,10 @@
     <section class="profile">
       <img class="profile__avatar" src="./images/avatar.png" alt="Аватар профиля">
       <div class="profile__info">
-        <h1 class="profile__user-name">Жак-Ив Кусто</h1>
-        <button class="profile__edit-button" type="button"></button>
+        <div class="profile__wrapper">
+          <h1 class="profile__user-name">Жак-Ив Кусто</h1>
+          <button class="profile__edit-button" type="button"></button>
+        </div>
         <p class="profile__user-occupation">Исследователь океана</p>
       </div>
       <button class="profile__add-button" type="button"></button>
@@ -79,6 +81,6 @@
   <footer class="footer">
     <p class="footer__copyright">© 2023 Mesto Russia</p>
   </footer>
-  <script src="./blocks/popup/popup.js"></script>
+  <script src="./index.js"></script>
 </body>
 </html>

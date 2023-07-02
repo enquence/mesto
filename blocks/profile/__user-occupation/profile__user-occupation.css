@@ -4,7 +4,6 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 1.2;
-  grid-area: user-occupation;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -12,13 +11,10 @@
 
 @media all and (max-width: 767px) {
   .profile__user-occupation {
-    font-size: 4.4vw;
-    justify-self: center;
-  }
-}
-
-@media all and (max-width: 320px) {
-  .profile__user-occupation {
     font-size: 14px;
+    justify-self: center;
+    text-align: center;
+    white-space: normal;
+    overflow: visible;
   }
 }
