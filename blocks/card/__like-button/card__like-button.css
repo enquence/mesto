@@ -4,4 +4,10 @@
   background-image: url('../../../images/like-button_disabled.svg');
   background-repeat: no-repeat;
   background-position: center;
+  opacity: 1;
+  transition: opacity 0.2s linear;
+}
+
+.card__like-button:hover {
+  opacity: 0.5;
 }

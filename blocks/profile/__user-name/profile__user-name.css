@@ -1,7 +1,23 @@
 .profile__user-name {
-  margin: 0 0 16px;
+  margin: 0;
   padding: 0;
   font-weight: 500;
   font-size: 42px;
-  line-height: 48px;
+  line-height: 1.1;
+  grid-area: user-name;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media all and (max-width: 767px) {
+  .profile__user-name {
+    font-size: 8.5vw;
+  }
+}
+
+@media all and (max-width: 320px) {
+  .profile__user-name {
+    font-size: 27px;
+  }
 }

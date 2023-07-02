@@ -1,0 +1,9 @@
+.form__field_type_occupation {
+  margin: 0 0 48px;
+}
+
+@media all and (max-width: 548px) {
+  .form__field_type_occupation {
+    margin: 0 0 45px;
+  }
+}

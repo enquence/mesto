@@ -1,0 +1,15 @@
+.form__save-button {
+  width: 100%;
+  background-color: black;
+  color: white;
+  min-height: 50px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  opacity: 1;
+  transition: opacity 0.3s linear;
+}
+
+.form__save-button:hover {
+  opacity: 0.8;
+}

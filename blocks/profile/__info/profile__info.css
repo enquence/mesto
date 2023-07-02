@@ -1,13 +1,31 @@
 .profile__info {
-  /*display: grid;*/
-  /*grid-template-columns: repeat(2, fit-content(100%));*/
-  /*grid-template-rows: repeat(2, 1fr);*/
-  /*grid-template-areas:*/
-  /*'user-name edit-button'*/
-  /*'user-occupation user-occupation';*/
-  /*column-gap: 18px;*/
-  /*row-gap: 16px;*/
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: minmax(1fr, max-content) 24px;
+  grid-template-areas:
+  'user-name edit-button'
+  'user-occupation user-occupation';
+  column-gap: 18px;
+  row-gap: 16px;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*justify-content: flex-start;*/
+}
+
+@media all and (max-width: 767px) {
+  .profile__info {
+    grid-template-columns: 6% 1fr 6%;
+    grid-template-areas:
+      '. user-name edit-button'
+      'user-occupation user-occupation user-occupation';
+    max-width: 100%;
+    row-gap: 14px;
+    margin-bottom: 10px;
+    column-gap: 3vw;
+  }
+}
+
+@media all and (max-width: 320px) {
+  .profile__info {
+    column-gap: 10px;
+  }
 }
