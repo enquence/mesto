@@ -5,3 +5,9 @@
   max-width: 880px;
   margin: 0 auto 67px;
 }
+
+@media all and (max-width: 767px) {
+  .elements {
+    margin-bottom: 48px;
+  }
+}

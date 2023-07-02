@@ -1,7 +1,7 @@
 .header {
   min-height: 74px;
   margin: 45px auto 40px;
-  border-bottom: rgba(84, 84, 84, 1) 1px solid;
+  border-bottom: rgba(84, 84, 84, 0.7) 1px solid;
 }
 
 @media all and (max-width: 918px) {
