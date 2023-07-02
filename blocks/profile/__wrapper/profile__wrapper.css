@@ -4,7 +4,7 @@
   flex-direction: row;
   justify-items: flex-start;
   align-items: baseline;
-  gap: 18px
+  gap: 18px;
 }
 
 @media all and (max-width: 767px) {
