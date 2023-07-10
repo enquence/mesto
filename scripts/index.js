@@ -26,13 +26,19 @@ const initialCards = [
 ];
 
 const popupElement = document.querySelector('.popup')
-const formElement = document.querySelector('.form')
+const popupContainerProfileElement = document.querySelector('.popup__container_type_profile')
+const popupContainerNewCardElement = document.querySelector('.popup__container_type_new-card')
+const profileFormElement = document.querySelector('.form_type_profile')
+const addCardFormElement = document.querySelector('.form_type_new-card')
 const nameInput = document.querySelector('.form__field_type_name')
 const jobInput = document.querySelector('.form__field_type_occupation')
 const nameElement = document.querySelector('.profile__user-name')
 const jobElement = document.querySelector('.profile__user-occupation')
+const placeTitleInput = document.querySelector('.form__field_type_place-title')
+const placeLinkInput = document.querySelector('.form__field_type_place-link')
 const editButton = document.querySelector('.profile__edit-button')
-const closeButton = document.querySelector('.popup__close-button')
+const addButton = document.querySelector('.profile__add-button')
+const closeButtonsArray = Array.from(document.querySelectorAll('.popup__close-button'))
 
 const createCardElement = (name, link) => {
   const cardTemplate = document.querySelector('#card').content
@@ -51,22 +57,42 @@ const addCards = (append = true, ...cards) => {
   })
 }
 
-const showPopup = () => {
+const showProfilePopup = () => {
   popupElement.classList.add('popup_opened')
+  popupContainerProfileElement.classList.add('popup__container_visible')
   nameInput.value = nameElement.textContent
   jobInput.value = jobElement.textContent
 }
 
-const closePopup = () => popupElement.classList.remove('popup_opened')
+const showAddCardPopup = () => {
+  popupElement.classList.add('popup_opened')
+  popupContainerNewCardElement.classList.add('popup__container_visible')
+  placeTitleInput.value = '';
+  placeLinkInput.value = '';
+}
 
-const handleFormSubmit = (evt) => {
+const closePopup = (evt) => {
+  popupElement.classList.remove('popup_opened')
+  evt.target.closest('.popup__container').classList.remove('popup__container_visible')
+}
+
+const handleProfileFormSubmit = (evt) => {
   evt.preventDefault()
   nameElement.textContent = nameInput.value
   jobElement.textContent = jobInput.value
   closePopup()
 }
 
+const handleAddCardFormSubmit = (evt) => {
+  evt.preventDefault()
+  addCards(false, {name: placeTitleInput.value, link: placeLinkInput.value})
+  closePopup()
+}
+
 addCards(true, ...initialCards)
-formElement.addEventListener('submit', handleFormSubmit)
-editButton.addEventListener('click', showPopup)
-closeButton.addEventListener('click', closePopup)
+
+profileFormElement.addEventListener('submit', handleProfileFormSubmit)
+addCardFormElement.addEventListener('submit', handleAddCardFormSubmit)
+editButton.addEventListener('click', showProfilePopup)
+addButton.addEventListener('click', showAddCardPopup)
+closeButtonsArray.forEach( (button) => button.addEventListener('click', closePopup) )

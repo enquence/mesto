@@ -10,6 +10,7 @@
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
   padding: 34px 36px 37px;
   box-sizing: border-box;
+  display: none;
 }
 
 @media all and (max-width: 548px) {
