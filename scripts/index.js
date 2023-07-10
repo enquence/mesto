@@ -46,6 +46,7 @@ const createCardElement = (name, link) => {
   cardElement.querySelector('.card__title').textContent = name
   cardElement.querySelector('.card__image').src = link
   cardElement.querySelector('.card__image').alt = name
+  cardElement.querySelector('.card__like-button').addEventListener('click', (evt) => evt.target.classList.toggle('card__like-button_active'))
   return cardElement
 }
 
