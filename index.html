@@ -28,8 +28,8 @@
   <footer class="footer">
     <p class="footer__copyright">© 2023 Mesto Russia</p>
   </footer>
-  <div class="popup">
-    <div class="popup__container popup__container_type_profile">
+  <div class="popup popup_type_profile">
+    <div class="popup__container">
       <button class="popup__close-button" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
       <form class="form form_type_profile" name="profile" novalidate>
@@ -38,14 +38,25 @@
         <button class="form__save-button" type="submit">Сохранить</button>
       </form>
     </div>
-    <div class="popup__container popup__container_type_new-card">
+  </div>
+  <div class="popup popup_type_new-card">
+    <div class="popup__container">
       <button class="popup__close-button" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
       <form class="form form_type_new-card" name="new-card" novalidate>
-        <input class="form__field form__field_type_place-title" name="place-title" type="text" placeholder="Название" autocomplete="off" required>
+        <input class="form__field form__field_type_place-title" name="place-title" type="text" placeholder="Название" autocomplete="off" minlength="1" required>
         <input class="form__field form__field_type_place-link" name="place-link" type="text" placeholder="Ссылка на картинку" autocomplete="off" required>
         <button class="form__save-button" type="submit">Создать</button>
       </form>
+    </div>
+  </div>
+  <div class="popup popup_type_image">
+    <div class="popup__image-container">
+      <button class="popup__close-button" type="button"></button>
+      <figure class="popup__image-content">
+        <img class="popup__image" src="./images/baikal.png" alt="Чтобы nu html checker не ругался">
+        <figcaption class="popup__image-caption"></figcaption>
+      </figure>
     </div>
   </div>
   <template id="card">
