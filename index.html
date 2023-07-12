@@ -45,7 +45,7 @@
       <h2 class="popup__title">Новое место</h2>
       <form class="form form_type_new-card" name="new-card" novalidate>
         <input class="form__field form__field_type_place-title" name="place-title" type="text" placeholder="Название" autocomplete="off" minlength="1" required>
-        <input class="form__field form__field_type_place-link" name="place-link" type="text" placeholder="Ссылка на картинку" autocomplete="off" required>
+        <input class="form__field form__field_type_place-link" name="place-link" type="url" placeholder="Ссылка на картинку" autocomplete="off" required>
         <button class="form__save-button" type="submit">Создать</button>
       </form>
     </div>
@@ -69,6 +69,7 @@
       </div>
     </article>
   </template>
+  <script src="./scripts/cards.js"></script>
   <script src="./scripts/index.js"></script>
 </body>
 </html>
