@@ -62,7 +62,7 @@ const handleProfileFormSubmit = (evt) => {
   evt.preventDefault()
   nameElement.textContent = nameInput.value
   jobElement.textContent = jobInput.value
-  closePopup(evt)
+  closePopup(popupProfileElement)
 }
 
 const handleAddCardFormSubmit = (evt) => {
@@ -75,7 +75,7 @@ const handleAddCardFormSubmit = (evt) => {
   imageBuffer.src = placeLinkInput.value
   imageBuffer.onload = () => {
     addCards(false, {name: placeTitleInput.value, link: placeLinkInput.value})
-    closePopup(evt)
+    closePopup(popupNewCardElement)
   }
   imageBuffer.onerror = () => alert('По этой ссылке нет картинки!')
 }
