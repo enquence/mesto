@@ -19,6 +19,10 @@ const openPopup = (popupElement) => popupElement.classList.add('popup_opened')
 const handleLikeClick = (evt) => evt.target.classList.toggle('card__like-button_active')
 const handleCardDeleteClick = (evt) => evt.target.closest('.card').remove()
 const closePopup = (popupElement) => popupElement.classList.remove('popup_opened')
+const closeAllPopups = () => {
+  const openedPopupList = Array.from(document.querySelectorAll('.popup_opened'))
+  openedPopupList.forEach( (popup) => closePopup(popup) )
+}
 
 const showPicturesPopup = (evt) => {
   openPopup(popupImageElement)
@@ -80,10 +84,13 @@ const handleAddCardFormSubmit = (evt) => {
   imageBuffer.onerror = () => alert('По этой ссылке нет картинки!')
 }
 
-addCards(true, ...initialCards)
-
+addCards(true, ...initialCards);
+[popupProfileElement, popupNewCardElement, popupImageElement].forEach( (popup) => popup.addEventListener('click', () => closePopup(popup)) )
 profileFormElement.addEventListener('submit', handleProfileFormSubmit)
 addCardFormElement.addEventListener('submit', handleAddCardFormSubmit)
 editButton.addEventListener('click', showProfilePopup)
 addButton.addEventListener('click', showAddCardPopup)
 closeButtonsArray.forEach( (button) => button.addEventListener('click', (evt) => closePopup(evt.target.closest('.popup'))) )
+window.addEventListener('keyup', (evt) => {
+  if (evt.key === 'Escape') closeAllPopups()
+})
