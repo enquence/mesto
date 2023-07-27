@@ -14,7 +14,7 @@ const enableValidation = (validationConfig) => {
     errorElement.classList.remove(validationConfig.errorClass)
   }
 
-  const checkValidity = (formElement, inputElement) => {
+  const checkValidity = (validationConfig, formElement, inputElement) => {
     if (!inputElement.validity.valid) {
       showInputError(validationConfig, formElement, inputElement, inputElement.validationMessage)
     } else {
@@ -37,12 +37,12 @@ const enableValidation = (validationConfig) => {
   const setEventListeners = (formElement) => {
     const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector))
     const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector)
-    toggleSubmitButtonState(inputList, buttonElement)
+    toggleSubmitButtonState(validationConfig, inputList, buttonElement)
 
     inputList.forEach( (input) => {
       input.addEventListener('input', () => {
-        checkValidity(formElement, input)
-        toggleSubmitButtonState(inputList, buttonElement)
+        checkValidity(validationConfig, formElement, input)
+        toggleSubmitButtonState(validationConfig, inputList, buttonElement)
       })
     })
   }
