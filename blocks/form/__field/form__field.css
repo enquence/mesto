@@ -4,19 +4,9 @@
   border-bottom: rgba(0, 0, 0, 0.2) 1px solid;
   outline: none;
   padding: 0 0 9px;
-  margin: 0 0 30px;
+  margin: 0 0 5px;
   font-size: 14px;
   line-height: 17px;
   font-weight: 400;
   box-sizing: border-box;
-}
-
-.form__field:nth-of-type(2) {
-  margin-bottom: 48px;
-}
-
-@media all and (max-width: 548px) {
-  .form__field:nth-of-type(2) {
-    margin-bottom: 45px;
-  }
 }

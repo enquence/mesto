@@ -52,9 +52,9 @@ const addCards = (append = true, ...cards) => {
 }
 
 const showProfilePopup = () => {
-  openPopup(popupProfileElement)
   nameInput.value = nameElement.textContent
   jobInput.value = jobElement.textContent
+  openPopup(popupProfileElement)
 }
 
 const showAddCardPopup = () => {
@@ -71,10 +71,6 @@ const handleProfileFormSubmit = (evt) => {
 
 const handleAddCardFormSubmit = (evt) => {
   evt.preventDefault()
-  if (!placeTitleInput.value) {
-    alert('У места должно быть название!')
-    return
-  }
   const imageBuffer = new Image()
   imageBuffer.src = placeLinkInput.value
   imageBuffer.onload = () => {
@@ -85,7 +81,9 @@ const handleAddCardFormSubmit = (evt) => {
 }
 
 addCards(true, ...initialCards);
-[popupProfileElement, popupNewCardElement, popupImageElement].forEach( (popup) => popup.addEventListener('click', () => closePopup(popup)) )
+[popupProfileElement, popupNewCardElement, popupImageElement].forEach((popup) => popup.addEventListener('mousedown', (evt) => {
+  if (evt.target.classList.contains('popup_opened')) closePopup(popup)
+}))
 profileFormElement.addEventListener('submit', handleProfileFormSubmit)
 addCardFormElement.addEventListener('submit', handleAddCardFormSubmit)
 editButton.addEventListener('click', showProfilePopup)
