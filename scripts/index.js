@@ -15,13 +15,22 @@ const editButton = document.querySelector('.profile__edit-button')
 const addButton = document.querySelector('.profile__add-button')
 const closeButtonsArray = Array.from(document.querySelectorAll('.popup__close-button'))
 
-const openPopup = (popupElement) => popupElement.classList.add('popup_opened')
+const handleClosePopupOnEsc = (evt) => {
+  if (evt.key === 'Escape') {
+    const openedPopupList = Array.from(document.querySelectorAll('.popup_opened'))
+    openedPopupList.forEach((popup) => closePopup(popup))
+  }
+}
+
+const openPopup = (popupElement) => {
+  popupElement.classList.add('popup_opened')
+  window.addEventListener('keyup', handleClosePopupOnEsc)
+}
 const handleLikeClick = (evt) => evt.target.classList.toggle('card__like-button_active')
 const handleCardDeleteClick = (evt) => evt.target.closest('.card').remove()
-const closePopup = (popupElement) => popupElement.classList.remove('popup_opened')
-const closeAllPopups = () => {
-  const openedPopupList = Array.from(document.querySelectorAll('.popup_opened'))
-  openedPopupList.forEach( (popup) => closePopup(popup) )
+const closePopup = (popupElement) => {
+  popupElement.classList.remove('popup_opened')
+  window.removeEventListener('keyup', handleClosePopupOnEsc)
 }
 
 const showPicturesPopup = (evt) => {
@@ -76,6 +85,7 @@ const handleAddCardFormSubmit = (evt) => {
   imageBuffer.onload = () => {
     addCards(false, {name: placeTitleInput.value, link: placeLinkInput.value})
     closePopup(popupNewCardElement)
+    setButtonActivity({inactiveButtonClass: 'form__save-button_inactive'}, addCardFormElement.querySelector('.form__save-button'), true)
   }
   imageBuffer.onerror = () => alert('По этой ссылке нет картинки!')
 }
@@ -89,6 +99,3 @@ addCardFormElement.addEventListener('submit', handleAddCardFormSubmit)
 editButton.addEventListener('click', showProfilePopup)
 addButton.addEventListener('click', showAddCardPopup)
 closeButtonsArray.forEach( (button) => button.addEventListener('click', (evt) => closePopup(evt.target.closest('.popup'))) )
-window.addEventListener('keyup', (evt) => {
-  if (evt.key === 'Escape') closeAllPopups()
-})
