@@ -1,3 +1,12 @@
+const validationConfig = {
+  formSelector: '.form',
+  inputSelector: '.form__field',
+  submitButtonSelector: '.form__save-button',
+  inactiveButtonClass: 'form__save-button_inactive',
+  inputErrorClass: 'form__field_type_error',
+  errorClass: 'form__field-error_active'
+}
+
 const setButtonActivity = (validationConfig, buttonElement, isInactive) => {
   if (isInactive) {
     buttonElement.classList.add(validationConfig.inactiveButtonClass)
@@ -35,31 +44,22 @@ const checkValidity = (validationConfig, formElement, inputElement) => {
   }
 }
 
-const enableValidation = (validationConfig) => {
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector))
+  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector)
+  toggleSubmitButtonState(validationConfig, inputList, buttonElement)
 
-  const setEventListeners = (formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector))
-    const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector)
-    toggleSubmitButtonState(validationConfig, inputList, buttonElement)
-
-    inputList.forEach( (input) => {
-      input.addEventListener('input', () => {
-        checkValidity(validationConfig, formElement, input)
-        toggleSubmitButtonState(validationConfig, inputList, buttonElement)
-      })
+  inputList.forEach( (input) => {
+    input.addEventListener('input', () => {
+      checkValidity(validationConfig, formElement, input)
+      toggleSubmitButtonState(validationConfig, inputList, buttonElement)
     })
-  }
-
-  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector))
-  formList.forEach( (form) => setEventListeners(form))
-
+  })
 }
 
-enableValidation({
-  formSelector: '.form',
-  inputSelector: '.form__field',
-  submitButtonSelector: '.form__save-button',
-  inactiveButtonClass: 'form__save-button_inactive',
-  inputErrorClass: 'form__field_type_error',
-  errorClass: 'form__field-error_active'
-});
+const enableValidation = (validationConfig) => {
+  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector))
+  formList.forEach( (form) => setEventListeners(form))
+}
+
+enableValidation(validationConfig);
