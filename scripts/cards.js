@@ -30,7 +30,7 @@ class Card {
     this._newCardElement.querySelector('.card__image').addEventListener('click', showPicturesPopup)
   }
 
-  getCardElement() {
+  renderCardElement() {
     this._newCardElement = this._getCardTemplate()
 
     this._newCardElement.querySelector('.card__title').textContent = this._name

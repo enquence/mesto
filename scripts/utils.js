@@ -62,7 +62,9 @@ const showProfilePopup = () => {
 
 const showAddCardPopup = () => {
   popupAddPlaceElements.addPlaceForm.reset()
-  setButtonActivity(validationConfig, popupAddPlaceElements.submitButton, true)
+//  Две следующие строчки выглядят как костыль, но я пока не придумал как сделать иначе. Буду благодарен за совет)
+  popupAddPlaceElements.submitButton.classList.add('form__save-button_inactive')
+  popupAddPlaceElements.submitButton.disabled = true
   openPopup(popupAddPlaceElements.popup)
 }
 
