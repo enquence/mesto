@@ -2,22 +2,21 @@ class FormValidator {
   constructor(config, formElement) {
     this._config = config
     this._formElement = formElement
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector))
+    this._submitButtonElement = this._formElement.querySelector(this._config.submitButtonSelector)
   }
 
-  _setButtonActivity(activityState) {
-    const buttonElement = this._formElement.querySelector(this._config.submitButtonSelector)
-    if (activityState) {
-      buttonElement.classList.remove(this._config.inactiveButtonClass)
-      buttonElement.disabled = false
+  _setButtonActivity() {
+    if (!this._hasInvalidInput(this._inputList)) {
+      this._submitButtonElement.classList.remove(this._config.inactiveButtonClass)
+      this._submitButtonElement.disabled = false
     } else {
-      buttonElement.classList.add(this._config.inactiveButtonClass)
-      buttonElement.disabled = true
+      this._submitButtonElement.classList.add(this._config.inactiveButtonClass)
+      this._submitButtonElement.disabled = true
     }
   }
-
-  _toggleSubmitButtonState(inputList) {
-    const hasInvalidInput = (inputList) => inputList.some((input) => !input.validity.valid)
-    this._setButtonActivity(!hasInvalidInput(inputList))
+  _hasInvalidInput(inputList) {
+    return inputList.some((input) => !input.validity.valid)
   }
 
   _showInputError(inputElement, errorMessage) {
@@ -43,19 +42,24 @@ class FormValidator {
   }
 
   _setEventListeners() {
-    const inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector))
-    this._toggleSubmitButtonState(inputList)
-
-    inputList.forEach( (input) => {
+    this._setButtonActivity()
+    this._inputList.forEach( (input) => {
       input.addEventListener('input', () => {
         this._checkValidity(input)
-        this._toggleSubmitButtonState(inputList)
+        this._setButtonActivity()
       })
     })
   }
 
   enableValidation() {
     this._setEventListeners()
+  }
+
+  resetValidation() {
+    this._setButtonActivity(false)
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement)
+    })
   }
 
 }
