@@ -1,10 +1,9 @@
-import { showPicturesPopup } from './utils.js';
-
 class Card {
-  constructor({name, link}, templateSelector) {
+  constructor({name, link}, templateSelector, showPicturesPopup) {
     this._name = name;
     this._link = link;
     this._templateSelector = templateSelector;
+    this._showPicturesPopup = showPicturesPopup;
   }
 
   _getCardTemplate() {
@@ -25,13 +24,16 @@ class Card {
   }
 
   _setListeners() {
-    this._newCardElement.querySelector('.card__like-button').addEventListener('click', this._handleLikeClick.bind(this))
-    this._newCardElement.querySelector('.card__trash-button').addEventListener('click', this._handleCardDeleteClick.bind(this))
-    this._newCardElement.querySelector('.card__image').addEventListener('click', showPicturesPopup)
+    this._likeButton.addEventListener('click', this._handleLikeClick.bind(this))
+    this._deleteButton.addEventListener('click', this._handleCardDeleteClick.bind(this))
+    this._cardImage.addEventListener('click', () => this._showPicturesPopup({name: this._name, link: this._link}))
   }
 
   renderCardElement() {
     this._newCardElement = this._getCardTemplate()
+    this._cardImage = this._newCardElement.querySelector('.card__image')
+    this._likeButton = this._newCardElement.querySelector('.card__like-button')
+    this._deleteButton = this._newCardElement.querySelector('.card__trash-button')
 
     this._newCardElement.querySelector('.card__title').textContent = this._name
     const cardImage = this._newCardElement.querySelector('.card__image')
