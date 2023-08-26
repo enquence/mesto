@@ -1,4 +1,5 @@
-import Card from './Cards.js'
+import Card from '../components/Cards.js'
+import Section from '../components/Section.js'
 import initialCards from './cards-data.js'
 import { openPopup, closePopup } from './utils.js'
 import {
@@ -7,19 +8,22 @@ import {
   popupAddPlaceElements,
   validationConfig, popupImageElements
 } from './constants.js';
-import FormValidator from './FormValidator.js'
+import FormValidator from '../components/FormValidator.js'
 import '../pages/index.css';
 
 // -------- Функции карточек
 
 const cardTemplateSelector = 'card'
 
-const createCard = (cardData, cardTemplateSelector, showPicturesPopup) => {
-  const card = new Card(cardData, cardTemplateSelector, showPicturesPopup)
-  return card.renderCardElement()
-}
-
-const addCard = (cardData) => mainPageElements.elementSection.prepend(createCard(cardData, cardTemplateSelector, showPicturesPopup))
+const cardSection = new Section({
+  items: initialCards.reverse(),
+  renderer: (cardData) => {
+    const card = new Card(cardData, cardTemplateSelector, showPicturesPopup)
+    cardSection.addItem(card.renderCardElement())
+    },
+  },
+  '.elements'
+)
 
 // -------- Функции попапов
 
@@ -67,7 +71,12 @@ const handleAddCardFormSubmit = (evt) => {
   const imageBuffer = new Image()
   imageBuffer.src = popupAddPlaceElements.linkInput.value
   imageBuffer.onload = () => {
-    addCard({name: popupAddPlaceElements.titleInput.value, link: popupAddPlaceElements.linkInput.value})
+    const cardData = {
+      name: popupAddPlaceElements.titleInput.value,
+      link: popupAddPlaceElements.linkInput.value
+    }
+    const newCard = new Card(cardData, cardTemplateSelector, showPicturesPopup)
+    cardSection.addItem(newCard.renderCardElement())
     closePopup(popupAddPlaceElements.popup)
   }
   imageBuffer.onerror = () => alert('По этой ссылке нет картинки!')
@@ -80,7 +89,7 @@ const setFormSubmitListeners = () => {
 
 // -------- Имплементация
 
-initialCards.reverse().forEach( card => addCard(card) )
+cardSection.renderItems()
 setPopupListeners()
 setFormSubmitListeners()
 export const profileFormValidator = new FormValidator(validationConfig, popupProfileElements.profileForm)

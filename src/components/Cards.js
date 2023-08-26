@@ -1,9 +1,9 @@
 class Card {
-  constructor({name, link}, templateSelector, showPicturesPopup) {
+  constructor({name, link}, templateSelector, handleCardClick) {
     this._name = name;
     this._link = link;
     this._templateSelector = templateSelector;
-    this._showPicturesPopup = showPicturesPopup;
+    this._handleCardClick = handleCardClick;
   }
 
   _getCardTemplate() {
@@ -26,7 +26,7 @@ class Card {
   _setListeners() {
     this._likeButton.addEventListener('click', () => this._handleLikeClick())
     this._deleteButton.addEventListener('click', () => this._handleCardDeleteClick())
-    this._cardImage.addEventListener('click', () => this._showPicturesPopup({name: this._name, link: this._link}))
+    this._cardImage.addEventListener('click', () => this._handleCardClick({name: this._name, link: this._link}))
   }
 
   renderCardElement() {
