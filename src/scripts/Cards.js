@@ -15,7 +15,7 @@ class Card {
   }
 
   _handleLikeClick() {
-    this._newCardElement.querySelector('.card__like-button').classList.toggle('card__like-button_active')
+    this._likeButton.classList.toggle('card__like-button_active')
   }
 
   _handleCardDeleteClick() {
@@ -24,8 +24,8 @@ class Card {
   }
 
   _setListeners() {
-    this._likeButton.addEventListener('click', this._handleLikeClick.bind(this))
-    this._deleteButton.addEventListener('click', this._handleCardDeleteClick.bind(this))
+    this._likeButton.addEventListener('click', () => this._handleLikeClick())
+    this._deleteButton.addEventListener('click', () => this._handleCardDeleteClick())
     this._cardImage.addEventListener('click', () => this._showPicturesPopup({name: this._name, link: this._link}))
   }
 
