@@ -8,6 +8,7 @@ import {
   validationConfig, popupImageElements
 } from './constants.js';
 import FormValidator from './FormValidator.js'
+import '../pages/index.css';
 
 // -------- Функции карточек
 
