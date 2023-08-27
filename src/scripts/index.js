@@ -82,7 +82,7 @@ pageElements.editProfileButton.addEventListener('click', () => {
 const cardSection = new Section({
     items: initialCards.reverse(),
     renderer: (cardData) => {
-      const card = new Card(cardData, cardTemplateSelector, ({title, link}) => popupImage.open(cardData))
+      const card = new Card(cardData, cardTemplateSelector, () => popupImage.open(cardData))
       cardSection.addItem(card.renderCardElement())
     },
   },
