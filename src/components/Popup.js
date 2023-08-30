@@ -3,11 +3,12 @@ export default class Popup {
     this._selector = selector
     this._popupElement = document.querySelector(this._selector)
     this._closeButtonElement = this._popupElement.querySelector('.popup__close-button')
+    this._handleClosePopupOnEsc = this._handleClosePopupOnEsc.bind(this)
   }
 
   open() {
     this._popupElement.classList.add('popup_opened')
-    window.addEventListener('keyup', this._handleClosePopupOnEsc.bind(this))
+    window.addEventListener('keyup', this._handleClosePopupOnEsc)
   }
 
   close() {

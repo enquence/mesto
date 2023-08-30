@@ -36,9 +36,8 @@ class Card {
     this._deleteButton = this._newCardElement.querySelector('.card__trash-button')
 
     this._newCardElement.querySelector('.card__title').textContent = this._title
-    const cardImage = this._newCardElement.querySelector('.card__image')
-    cardImage.src = this._link
-    cardImage.alt = this._title
+    this._cardImage.src = this._link
+    this._cardImage.alt = this._title
 
     this._setListeners()
     return this._newCardElement
