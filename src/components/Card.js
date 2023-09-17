@@ -1,7 +1,8 @@
 class Card {
-  constructor({title, link}, templateSelector, handleCardClick) {
+  constructor({title, link, id}, templateSelector, handleCardClick) {
     this._title = title;
     this._link = link;
+    this._id = id;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
   }
@@ -31,6 +32,7 @@ class Card {
 
   renderCardElement() {
     this._newCardElement = this._getCardTemplate()
+    this._newCardElement.id = this._id
     this._cardImage = this._newCardElement.querySelector('.card__image')
     this._likeButton = this._newCardElement.querySelector('.card__like-button')
     this._deleteButton = this._newCardElement.querySelector('.card__trash-button')

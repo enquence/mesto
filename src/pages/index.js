@@ -4,7 +4,7 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js'
 import FormValidator from '../components/FormValidator.js'
-import initialCards from '../scripts/cards-data.js'
+import Api from "../components/Api.js";
 import './index.css';
 
 const cardTemplateSelector = 'card'
@@ -29,6 +29,16 @@ const validationConfig = {
   inputErrorClass: 'form__field_type_error',
   errorClass: 'form__field-error_active'
 }
+
+const optionsApi = {
+  url: 'https://mesto.nomoreparties.co/v1/cohort-75',
+  headers: {
+    authorization: 'd6407735-ae7a-4c39-ac77-589083b716b5',
+    'Content-Type': 'application/json'
+  }
+}
+const api = new Api(optionsApi)
+//console.log(api.getAllCards())
 
 // Данные пользователя и форма редактирования профиля
 
@@ -58,8 +68,8 @@ profileFormValidator.enableValidation()
 const popupImage = new PopupWithImage('.popup_type_image')
 popupImage.setEventListeners()
 
-const createCard = ({ title, link }) => {
-  const newCard = new Card({ title, link }, cardTemplateSelector, () => popupImage.open({ title, link }))
+const createCard = ({ name, link, id }) => {
+  const newCard = new Card({ name, link, id }, cardTemplateSelector, () => popupImage.open({ name, link }))
   return newCard.renderCardElement()
 }
 
@@ -83,11 +93,15 @@ export const addPlaceFormValidator = new FormValidator(validationConfig, pageEle
 addPlaceFormValidator.enableValidation()
 
 const cardSection = new Section({
-    items: initialCards.reverse(),
-    renderer: ({ title, link }) => {
-      cardSection.addItem(createCard({ title, link }))
+    items: [],
+    renderer: ({ name, link }) => {
+      cardSection.addItem(createCard({ name, link, id }))
     },
   },
   '.elements'
 )
-cardSection.renderItems()
+
+api.getAllCards()
+  .then((cards) => {
+    cards.forEach((card) => cardSection.addItem(createCard({ name: card.name, link: card.link, id: card._id })))
+  })
