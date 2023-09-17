@@ -8,11 +8,12 @@ import Api from "../components/Api.js";
 import './index.css';
 
 const cardTemplateSelector = 'card'
-const usernameSelector = '.profile__user-name'
-const jobSelector = '.profile__user-occupation'
+const nameSelector = '.profile__user-name'
+const aboutSelector = '.profile__user-occupation'
+const avatarSelector = '.profile__avatar'
 const pageElements = {
-  username: document.querySelector(usernameSelector),
-  job: document.querySelector(jobSelector),
+  username: document.querySelector(nameSelector),
+  job: document.querySelector(aboutSelector),
   usernameInput: document.querySelector('.form__field_type_name'),
   jobInput: document.querySelector('.form__field_type_occupation'),
   editProfileButton: document.querySelector('.profile__edit-button'),
@@ -38,30 +39,38 @@ const optionsApi = {
   }
 }
 const api = new Api(optionsApi)
-//console.log(api.getAllCards())
 
 // Данные пользователя и форма редактирования профиля
 
 const userInfo = new UserInfo({
-  usernameSelector: usernameSelector,
-  jobSelector: jobSelector
+  nameSelector: nameSelector,
+  aboutSelector: aboutSelector,
+  avatarSelector: avatarSelector
 })
-const popupProfile = new PopupWithForm('.popup_type_profile', ( { username, job } ) => {
-  userInfo.setUserInfo({ username: username, job: job })
-  popupProfile.close()
+const popupProfile = new PopupWithForm('.popup_type_profile', ({ name, about }) => {
+  api.updateUserInfo({ name, about })
+    .then((user) => {
+      userInfo.setUserInfo(user)
+    })
+    .catch((error) => console.log(error))
+    .finally(() => popupProfile.close())
 })
 popupProfile.setEventListeners()
 
 pageElements.editProfileButton.addEventListener('click', () => {
-  const { username, job } = userInfo.getUserInfo()
-  pageElements.usernameInput.value = username
-  pageElements.jobInput.value = job
+  const { name, about } = userInfo.getUserInfo()
+  pageElements.usernameInput.value = name
+  pageElements.jobInput.value = about
   profileFormValidator.resetValidation()
   popupProfile.open()
 })
 
 export const profileFormValidator = new FormValidator(validationConfig, pageElements.profileForm)
 profileFormValidator.enableValidation()
+
+api.getUserInfo()
+  .then((user) => userInfo.setUserInfo(user))
+  .catch((error) => console.log(error))
 
 // Работа с карточками: попап и форма добавления карточки, попап просмотра картинки
 

@@ -20,6 +20,24 @@ class Api {
     })
   }
 
+  getUserInfo() {
+    return this._sendRequest(`${this._url}/users/me`, {
+      method: 'GET',
+      headers: this._headers
+    })
+  }
+
+  updateUserInfo({ name, about }) {
+    return this._sendRequest(`${this._url}/users/me`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        about: about
+      })
+    })
+  }
+
 }
 
 export default Api
