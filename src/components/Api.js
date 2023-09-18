@@ -20,6 +20,24 @@ class Api {
     })
   }
 
+  addCard({ name, link }) {
+    return this._sendRequest(`${this._url}/cards`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        link: link
+      })
+    })
+  }
+
+  likeCard(cardId, isLiked) {
+    return this._sendRequest(`${this._url}/cards/${cardId}/likes`, {
+      method: isLiked ? 'DELETE' : 'PUT',
+      headers: this._headers
+    })
+  }
+
   getUserInfo() {
     return this._sendRequest(`${this._url}/users/me`, {
       method: 'GET',

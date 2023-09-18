@@ -32,6 +32,7 @@
 @import url('../blocks/popup/__image-caption/popup__image-caption.css');
 
 @import url('../blocks/form/form.css');
+@import url('../blocks/form/_type/_confirm/form_type_confirm.css');
 @import url('../blocks/form/__field/form__field.css');
 @import url('../blocks/form/__field/_type/form__field_type_name.css');
 @import url('../blocks/form/__field/_type/form__field_type_occupation.css');

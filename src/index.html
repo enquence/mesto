@@ -59,7 +59,7 @@
       <button class="popup__close-button" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
       <form class="form form_type_new-card" name="new-card">
-        <input class="form__field form__field_type_place-title" id="place-title" name="title" type="text" placeholder="Название" autocomplete="off" minlength="2" maxlength="30" required>
+        <input class="form__field form__field_type_place-title" id="place-title" name="name" type="text" placeholder="Название" autocomplete="off" minlength="2" maxlength="30" required>
         <span class="place-title-error form__field-error"></span>
         <input class="form__field form__field_type_place-link" id="place-link" name="link" type="url" placeholder="Ссылка на картинку" autocomplete="off" required>
         <span class="place-link-error form__field-error"></span>
@@ -74,6 +74,15 @@
         <img class="popup__image" src="#" alt=" ">
         <figcaption class="popup__image-caption"></figcaption>
       </figure>
+    </div>
+  </div>
+  <div class="popup popup_type_confirm">
+    <div class="popup__container">
+      <button class="popup__close-button" type="button"></button>
+      <h2 class="popup__title">Вы уверены?</h2>
+      <form class="form form_type_confirm" name="confirm">
+        <button class="form__save-button" type="submit">Да</button>
+      </form>
     </div>
   </div>
   <template id="card">
