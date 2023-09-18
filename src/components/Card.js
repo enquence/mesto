@@ -1,7 +1,8 @@
 class Card {
-  constructor({title, link, id}, templateSelector, handleCardClick) {
-    this._title = title;
+  constructor({name, link, id, likes}, templateSelector, handleCardClick) {
+    this._name = name;
     this._link = link;
+    this._likes = likes
     this._id = id;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
@@ -36,10 +37,12 @@ class Card {
     this._cardImage = this._newCardElement.querySelector('.card__image')
     this._likeButton = this._newCardElement.querySelector('.card__like-button')
     this._deleteButton = this._newCardElement.querySelector('.card__trash-button')
+    this._likesNumberElement = this._newCardElement.querySelector('.card__like-number')
 
-    this._newCardElement.querySelector('.card__title').textContent = this._title
+    this._newCardElement.querySelector('.card__title').textContent = this._name
     this._cardImage.src = this._link
-    this._cardImage.alt = this._title
+    this._cardImage.alt = this._name
+    this._likesNumberElement.textContent = this._likes
 
     this._setListeners()
     return this._newCardElement

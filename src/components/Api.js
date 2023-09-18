@@ -38,6 +38,16 @@ class Api {
     })
   }
 
+  updateAvatar({ avatar }) {
+    return this._sendRequest(`${this._url}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: avatar
+      })
+    })
+  }
+
 }
 
 export default Api

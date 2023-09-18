@@ -16,11 +16,13 @@ const pageElements = {
   job: document.querySelector(aboutSelector),
   usernameInput: document.querySelector('.form__field_type_name'),
   jobInput: document.querySelector('.form__field_type_occupation'),
+  avatarInput: document.querySelector('.form__field_type_avatar'),
   editProfileButton: document.querySelector('.profile__edit-button'),
   addPlaceButton: document.querySelector('.profile__add-button'),
   elementSection: document.querySelector('.elements'),
   profileForm: document.querySelector('.form_type_profile'),
-  addCardForm: document.querySelector('.form_type_new-card')
+  addCardForm: document.querySelector('.form_type_new-card'),
+  editAvatarButton: document.querySelector('.profile__avatar-edit')
 }
 const validationConfig = {
   formSelector: '.form',
@@ -49,13 +51,19 @@ const userInfo = new UserInfo({
 })
 const popupProfile = new PopupWithForm('.popup_type_profile', ({ name, about }) => {
   api.updateUserInfo({ name, about })
-    .then((user) => {
-      userInfo.setUserInfo(user)
-    })
+    .then((user) => userInfo.setUserInfo(user))
     .catch((error) => console.log(error))
     .finally(() => popupProfile.close())
 })
 popupProfile.setEventListeners()
+
+const popupAvatar = new PopupWithForm('.popup_type_avatar', ({ avatar }) => {
+  api.updateAvatar({ avatar })
+    .then((user) => userInfo.setUserInfo(user))
+    .catch((error) => console.log(error))
+    .finally(() => popupAvatar.close())
+})
+popupAvatar.setEventListeners()
 
 pageElements.editProfileButton.addEventListener('click', () => {
   const { name, about } = userInfo.getUserInfo()
@@ -63,6 +71,12 @@ pageElements.editProfileButton.addEventListener('click', () => {
   pageElements.jobInput.value = about
   profileFormValidator.resetValidation()
   popupProfile.open()
+})
+
+pageElements.editAvatarButton.addEventListener('click', () => {
+  const { avatar } = userInfo.getUserInfo()
+  pageElements.avatarInput.value = avatar
+  popupAvatar.open()
 })
 
 export const profileFormValidator = new FormValidator(validationConfig, pageElements.profileForm)
@@ -77,8 +91,8 @@ api.getUserInfo()
 const popupImage = new PopupWithImage('.popup_type_image')
 popupImage.setEventListeners()
 
-const createCard = ({ name, link, id }) => {
-  const newCard = new Card({ name, link, id }, cardTemplateSelector, () => popupImage.open({ name, link }))
+const createCard = ({ name, link, id, likes }) => {
+  const newCard = new Card({ name, link, id, likes }, cardTemplateSelector, () => popupImage.open({ name, link }))
   return newCard.renderCardElement()
 }
 
@@ -103,8 +117,8 @@ addPlaceFormValidator.enableValidation()
 
 const cardSection = new Section({
     items: [],
-    renderer: ({ name, link }) => {
-      cardSection.addItem(createCard({ name, link, id }))
+    renderer: ({ name, link, id, likes }) => {
+      cardSection.addItem(createCard({ name, link, id, likes }))
     },
   },
   '.elements'
@@ -112,5 +126,5 @@ const cardSection = new Section({
 
 api.getAllCards()
   .then((cards) => {
-    cards.forEach((card) => cardSection.addItem(createCard({ name: card.name, link: card.link, id: card._id })))
+    cards.forEach((card) => cardSection.addItem(createCard({ name: card.name, link: card.link, id: card._id, likes: card.likes.length })))
   })

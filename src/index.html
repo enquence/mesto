@@ -11,7 +11,10 @@
   </header>
   <main class="page__content">
     <section class="profile">
-      <img class="profile__avatar" src="<%=require('./images/avatar.png')%>" alt="Аватар профиля">
+      <div class="profile__avatar-container">
+        <img class="profile__avatar" src="<%=require('./images/avatar.png')%>" alt="Аватар профиля">
+        <button class="profile__avatar-edit"></button>
+      </div>
       <div class="profile__info">
         <div class="profile__wrapper">
           <h1 class="profile__user-name">Андрей Огнев</h1>
@@ -36,6 +39,17 @@
         <span class="user-name-error form__field-error"></span>
         <input class="form__field form__field_type_occupation" id="user-job" name="about" type="text" placeholder="Что вас определяет?" autocomplete="off" required minlength="2" maxlength="200" value="  ">
         <span class="user-job-error form__field-error"></span>
+        <button class="form__save-button" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup_type_avatar">
+    <div class="popup__container">
+      <button class="popup__close-button" type="button"></button>
+      <h2 class="popup__title">Обновить аватар</h2>
+      <form class="form form_type_avatar" name="avatar">
+        <input class="form__field form__field_type_avatar" id="avatar" name="avatar" type="url" placeholder="Введите ссылку на картинку" autocomplete="off" required>
+        <span class="avatar-error form__field-error"></span>
         <button class="form__save-button" type="submit">Сохранить</button>
       </form>
     </div>
@@ -68,7 +82,10 @@
       <button class="card__trash-button" type="button"></button>
       <div class="card__text">
         <h2 class="card__title"></h2>
-        <button class="card__like-button" type="button"></button>
+        <div class="card__like-container">
+          <button class="card__like-button" type="button"></button>
+          <span class="card__like-number">0</span>
+        </div>
       </div>
     </article>
   </template>
