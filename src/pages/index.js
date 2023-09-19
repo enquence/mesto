@@ -2,11 +2,11 @@ import Card from '../components/Card.js'
 import Section from '../components/Section.js'
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import UserInfo from '../components/UserInfo.js'
 import FormValidator from '../components/FormValidator.js'
 import Api from "../components/Api.js";
 import './index.css';
-import Popup from "../components/Popup";
 
 const cardTemplateSelector = 'card'
 const nameSelector = '.profile__user-name'
@@ -23,6 +23,7 @@ const pageElements = {
   elementSection: document.querySelector('.elements'),
   profileForm: document.querySelector('.form_type_profile'),
   addCardForm: document.querySelector('.form_type_new-card'),
+  avatarForm: document.querySelector('.form_type_avatar'),
   editAvatarButton: document.querySelector('.profile__avatar-edit')
 }
 const validationConfig = {
@@ -43,64 +44,45 @@ const optionsApi = {
 }
 const api = new Api(optionsApi)
 
-// Данные пользователя и форма редактирования профиля
-
 const userInfo = new UserInfo({
   nameSelector: nameSelector,
   aboutSelector: aboutSelector,
   avatarSelector: avatarSelector
 })
 
-api.getUserInfo()
-  .then((user) => userInfo.setUserInfo(user))
-  .catch((error) => console.log(error))
-
-
 const popupProfile = new PopupWithForm('.popup_type_profile', ({ name, about }) => {
+  popupProfile.showLoadingState()
   api.updateUserInfo({ name, about })
     .then((user) => userInfo.setUserInfo(user))
-    .catch((error) => console.log(error))
-    .finally(() => popupProfile.close())
+    .catch((error) => console.log(`Ошибка при обновлении данных пользователя: ${error}`))
+    .finally(() => {
+      popupProfile.close()
+      popupProfile.showLoadingState(false)
+    })
 })
-popupProfile.setEventListeners()
 
 const popupAvatar = new PopupWithForm('.popup_type_avatar', ({ avatar }) => {
+  popupAvatar.showLoadingState()
   api.updateAvatar({ avatar })
     .then((user) => userInfo.setUserInfo(user))
-    .catch((error) => console.log(error))
-    .finally(() => popupAvatar.close())
+    .catch((error) => console.log(`Ошибка при загрузке изображения: ${error}`))
+    .finally(() => {
+      popupAvatar.close()
+      popupAvatar.showLoadingState(false)
+    })
 })
-popupAvatar.setEventListeners()
-
-pageElements.editProfileButton.addEventListener('click', () => {
-  const { name, about } = userInfo.getUserInfo()
-  pageElements.usernameInput.value = name
-  pageElements.jobInput.value = about
-  profileFormValidator.resetValidation()
-  popupProfile.open()
-})
-
-pageElements.editAvatarButton.addEventListener('click', () => {
-  const { avatar } = userInfo.getUserInfo()
-  pageElements.avatarInput.value = avatar
-  popupAvatar.open()
-})
-
-export const profileFormValidator = new FormValidator(validationConfig, pageElements.profileForm)
-profileFormValidator.enableValidation()
-
-// Работа с карточками: попап и форма добавления карточки, попап просмотра картинки
-
-const popupImage = new PopupWithImage('.popup_type_image')
-popupImage.setEventListeners()
-
-//const popupConfirm = new PopupWithForm('popup_type_confirm')
 
 const createCard = ({ name, link, id, likes, isLikedByUser, owned }) => {
   const newCard = new Card({ name, link, id, likes, isLikedByUser, owned },
     cardTemplateSelector,
     () => popupImage.open({ name, link }),
-    (isLiked) => api.likeCard(id, isLiked)
+    (isLiked) => api.likeCard(id, isLiked),
+    () => popupConfirm.open(() => {
+      api.deleteCard(id)
+        .then(() => newCard.deleteCard())
+        .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
+        .finally(() => popupConfirm.close())
+    })
   )
   return newCard.renderCardElement()
 }
@@ -109,6 +91,7 @@ const popupNewCard = new PopupWithForm('.popup_type_new-card', ({ name, link }) 
   const imageBuffer = new Image()
   imageBuffer.src = link
   imageBuffer.onload = () => {
+    popupNewCard.showLoadingState()
     api.addCard({ name, link })
       .then((card) => {
         cardSection.addItem(createCard({
@@ -121,19 +104,16 @@ const popupNewCard = new PopupWithForm('.popup_type_new-card', ({ name, link }) 
         }))
       })
       .catch((error) => console.log(error))
-      .finally(() => popupNewCard.close())
+      .finally(() => {
+        popupNewCard.close()
+        popupNewCard.showLoadingState(false)
+      })
   }
-  imageBuffer.onerror = () => alert('По этой ссылке нет картинки!')
-})
-popupNewCard.setEventListeners()
-
-pageElements.addPlaceButton.addEventListener('click', () => {
-  addPlaceFormValidator.resetValidation()
-  popupNewCard.open()
+  imageBuffer.onerror = () => alert('По этой ссылке нет картинки.')
 })
 
-export const addPlaceFormValidator = new FormValidator(validationConfig, pageElements.addCardForm)
-addPlaceFormValidator.enableValidation()
+const popupImage = new PopupWithImage('.popup_type_image')
+const popupConfirm = new PopupWithConfirmation('.popup_type_confirm')
 
 const cardSection = new Section({
     items: [],
@@ -144,10 +124,12 @@ const cardSection = new Section({
   '.elements'
 )
 
-api.getAllCards()
+api.getUserInfo()
+  .then((user) => userInfo.setUserInfo(user))
+  .then(() => api.getAllCards())
   .then((cards) => {
     const { id: userId } = userInfo.getUserInfo()
-    cards.forEach((card) => {
+    cards.reverse().forEach((card) => {
       const isLikedByUser = card.likes.some((user) => user._id === userId)
       cardSection.addItem(createCard({
         name: card.name,
@@ -159,3 +141,38 @@ api.getAllCards()
       }))
     })
   })
+  .then(() => {
+    const profileFormValidator = new FormValidator(validationConfig, pageElements.profileForm)
+    const avatarFormValidator = new FormValidator(validationConfig, pageElements.avatarForm)
+    const addPlaceFormValidator = new FormValidator(validationConfig, pageElements.addCardForm)
+
+    profileFormValidator.enableValidation()
+    avatarFormValidator.enableValidation()
+    addPlaceFormValidator.enableValidation()
+
+    popupProfile.setEventListeners()
+    popupAvatar.setEventListeners()
+    popupImage.setEventListeners()
+    popupConfirm.setEventListeners()
+    popupNewCard.setEventListeners()
+
+    pageElements.editProfileButton.addEventListener('click', () => {
+      const { name, about } = userInfo.getUserInfo()
+      pageElements.usernameInput.value = name
+      pageElements.jobInput.value = about
+      profileFormValidator.resetValidation()
+      popupProfile.open()
+    })
+
+    pageElements.editAvatarButton.addEventListener('click', () => {
+      const { avatar } = userInfo.getUserInfo()
+      pageElements.avatarInput.value = avatar
+      popupAvatar.open()
+    })
+
+    pageElements.addPlaceButton.addEventListener('click', () => {
+      addPlaceFormValidator.resetValidation()
+      popupNewCard.open()
+    })
+  })
+  .catch((error) => console.log(error))

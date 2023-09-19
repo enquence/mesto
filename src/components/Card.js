@@ -1,5 +1,5 @@
 class Card {
-  constructor({name, link, id, likes, isLikedByUser, owned}, templateSelector, handleCardClick, handleLikeClick) {
+  constructor({name, link, id, likes, isLikedByUser, owned}, templateSelector, handleCardClick, handleLikeClick, handleDeleteClick) {
     this._name = name;
     this._link = link;
     this._likes = likes;
@@ -9,6 +9,7 @@ class Card {
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handleLikeClick = handleLikeClick;
+    this._handleDeleteClick = handleDeleteClick;
   }
 
   _getCardTemplate() {
@@ -19,7 +20,7 @@ class Card {
       .cloneNode(true)
   }
 
-  _handleCardDeleteClick() {
+  deleteCard() {
     this._newCardElement.remove()
     this._newCardElement = null
   }
@@ -39,13 +40,12 @@ class Card {
             this._likeButton.classList.remove('card__like-button_active')
         })
     })
-    this._deleteButton.addEventListener('click', () => this._handleCardDeleteClick())
+    if (this._owned) this._deleteButton.addEventListener('click', () => this._handleDeleteClick())
     this._cardImage.addEventListener('click', this._handleCardClick)
   }
 
   renderCardElement() {
     this._newCardElement = this._getCardTemplate()
-  //  this._newCardElement.id = this._id
     this._cardImage = this._newCardElement.querySelector('.card__image')
     this._likeButton = this._newCardElement.querySelector('.card__like-button')
     this._deleteButton = this._newCardElement.querySelector('.card__trash-button')

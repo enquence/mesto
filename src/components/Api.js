@@ -38,6 +38,13 @@ class Api {
     })
   }
 
+  deleteCard(cardId) {
+    return this._sendRequest(`${this._url}/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: this._headers
+    })
+  }
+
   getUserInfo() {
     return this._sendRequest(`${this._url}/users/me`, {
       method: 'GET',
