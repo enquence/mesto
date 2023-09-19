@@ -167,6 +167,7 @@ api.getUserInfo()
     pageElements.editAvatarButton.addEventListener('click', () => {
       const { avatar } = userInfo.getUserInfo()
       pageElements.avatarInput.value = avatar
+      avatarFormValidator.resetValidation()
       popupAvatar.open()
     })
 
