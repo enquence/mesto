@@ -32,13 +32,11 @@ class Card {
           this._isLikedByUser = !this._isLikedByUser
           this._likes = card.likes
           this._likesNumberElement.textContent = this._likes.length
-        })
-        .catch((error) => console.log(error))
-        .finally(() => {
           this._isLikedByUser ?
             this._likeButton.classList.add('card__like-button_active') :
             this._likeButton.classList.remove('card__like-button_active')
         })
+        .catch((error) => console.log(error))
     })
     if (this._owned) this._deleteButton.addEventListener('click', () => this._handleDeleteClick())
     this._cardImage.addEventListener('click', this._handleCardClick)

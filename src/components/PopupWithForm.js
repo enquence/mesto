@@ -18,6 +18,10 @@ export default class PopupWithForm extends Popup {
     return this._data
   }
 
+  setInputValues(data) {
+    this._inputElements.forEach((input) => input.value = data[input.name])
+  }
+
   showLoadingState(isLoading = true) {
     isLoading ? this._submitButtomElement.textContent = 'Сохранение...'
       : this._submitButtomElement.textContent = this._submitButtomIdleCaption

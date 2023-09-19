@@ -7,41 +7,14 @@ import UserInfo from '../components/UserInfo.js'
 import FormValidator from '../components/FormValidator.js'
 import Api from "../components/Api.js";
 import './index.css';
+import { cardTemplateSelector,
+  nameSelector,
+  aboutSelector,
+  avatarSelector,
+  pageElements,
+  validationConfig,
+  optionsApi } from "../utils/constants.js"
 
-const cardTemplateSelector = 'card'
-const nameSelector = '.profile__user-name'
-const aboutSelector = '.profile__user-occupation'
-const avatarSelector = '.profile__avatar'
-const pageElements = {
-  username: document.querySelector(nameSelector),
-  job: document.querySelector(aboutSelector),
-  usernameInput: document.querySelector('.form__field_type_name'),
-  jobInput: document.querySelector('.form__field_type_occupation'),
-  avatarInput: document.querySelector('.form__field_type_avatar'),
-  editProfileButton: document.querySelector('.profile__edit-button'),
-  addPlaceButton: document.querySelector('.profile__add-button'),
-  elementSection: document.querySelector('.elements'),
-  profileForm: document.querySelector('.form_type_profile'),
-  addCardForm: document.querySelector('.form_type_new-card'),
-  avatarForm: document.querySelector('.form_type_avatar'),
-  editAvatarButton: document.querySelector('.profile__avatar-edit')
-}
-const validationConfig = {
-  formSelector: '.form',
-  inputSelector: '.form__field',
-  submitButtonSelector: '.form__save-button',
-  inactiveButtonClass: 'form__save-button_inactive',
-  inputErrorClass: 'form__field_type_error',
-  errorClass: 'form__field-error_active'
-}
-
-const optionsApi = {
-  url: 'https://mesto.nomoreparties.co/v1/cohort-75',
-  headers: {
-    authorization: 'd6407735-ae7a-4c39-ac77-589083b716b5',
-    'Content-Type': 'application/json'
-  }
-}
 const api = new Api(optionsApi)
 
 const userInfo = new UserInfo({
@@ -53,23 +26,23 @@ const userInfo = new UserInfo({
 const popupProfile = new PopupWithForm('.popup_type_profile', ({ name, about }) => {
   popupProfile.showLoadingState()
   api.updateUserInfo({ name, about })
-    .then((user) => userInfo.setUserInfo(user))
-    .catch((error) => console.log(`Ошибка при обновлении данных пользователя: ${error}`))
-    .finally(() => {
+    .then((user) => {
+      userInfo.setUserInfo(user)
       popupProfile.close()
-      popupProfile.showLoadingState(false)
     })
+    .catch((error) => console.log(`Ошибка при обновлении данных пользователя: ${error}`))
+    .finally(() => popupProfile.showLoadingState(false))
 })
 
 const popupAvatar = new PopupWithForm('.popup_type_avatar', ({ avatar }) => {
   popupAvatar.showLoadingState()
   api.updateAvatar({ avatar })
-    .then((user) => userInfo.setUserInfo(user))
-    .catch((error) => console.log(`Ошибка при загрузке изображения: ${error}`))
-    .finally(() => {
+    .then((user) => {
+      userInfo.setUserInfo(user)
       popupAvatar.close()
-      popupAvatar.showLoadingState(false)
     })
+    .catch((error) => console.log(`Ошибка при загрузке изображения: ${error}`))
+    .finally(() => popupAvatar.showLoadingState(false))
 })
 
 const createCard = ({ name, link, id, likes, isLikedByUser, owned }) => {
@@ -79,9 +52,11 @@ const createCard = ({ name, link, id, likes, isLikedByUser, owned }) => {
     (isLiked) => api.likeCard(id, isLiked),
     () => popupConfirm.open(() => {
       api.deleteCard(id)
-        .then(() => newCard.deleteCard())
+        .then(() => {
+          newCard.deleteCard()
+          popupConfirm.close()
+        })
         .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
-        .finally(() => popupConfirm.close())
     })
   )
   return newCard.renderCardElement()
@@ -102,12 +77,10 @@ const popupNewCard = new PopupWithForm('.popup_type_new-card', ({ name, link }) 
           isLikedByUser: false,
           owned: true
         }))
+        popupNewCard.close()
       })
       .catch((error) => console.log(error))
-      .finally(() => {
-        popupNewCard.close()
-        popupNewCard.showLoadingState(false)
-      })
+      .finally(() => popupNewCard.showLoadingState(false))
   }
   imageBuffer.onerror = () => alert('По этой ссылке нет картинки.')
 })
@@ -157,16 +130,13 @@ api.getUserInfo()
     popupNewCard.setEventListeners()
 
     pageElements.editProfileButton.addEventListener('click', () => {
-      const { name, about } = userInfo.getUserInfo()
-      pageElements.usernameInput.value = name
-      pageElements.jobInput.value = about
+      popupProfile.setInputValues(userInfo.getUserInfo())
       profileFormValidator.resetValidation()
       popupProfile.open()
     })
 
     pageElements.editAvatarButton.addEventListener('click', () => {
-      const { avatar } = userInfo.getUserInfo()
-      pageElements.avatarInput.value = avatar
+      popupAvatar.setInputValues(userInfo.getUserInfo())
       avatarFormValidator.resetValidation()
       popupAvatar.open()
     })

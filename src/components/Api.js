@@ -10,7 +10,6 @@ class Api {
         if (resp.ok) return resp.json()
         throw new Error(`Ошибка: ${resp.statusText}`)
       })
-      .catch((error) => console.log(error))
   }
 
   getAllCards() {
